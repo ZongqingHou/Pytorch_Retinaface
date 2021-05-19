@@ -1,10 +1,7 @@
-import time
 import torch
 import torch.nn as nn
-import torchvision.models._utils as _utils
-import torchvision.models as models
 import torch.nn.functional as F
-from torch.autograd import Variable
+
 
 def conv_bn(inp, oup, stride = 1, leaky = 0):
     return nn.Sequential(
@@ -13,11 +10,13 @@ def conv_bn(inp, oup, stride = 1, leaky = 0):
         nn.LeakyReLU(negative_slope=leaky, inplace=True)
     )
 
+
 def conv_bn_no_relu(inp, oup, stride):
     return nn.Sequential(
         nn.Conv2d(inp, oup, 3, stride, 1, bias=False),
         nn.BatchNorm2d(oup),
     )
+
 
 def conv_bn1X1(inp, oup, stride, leaky=0):
     return nn.Sequential(
@@ -25,6 +24,7 @@ def conv_bn1X1(inp, oup, stride, leaky=0):
         nn.BatchNorm2d(oup),
         nn.LeakyReLU(negative_slope=leaky, inplace=True)
     )
+
 
 def conv_dw(inp, oup, stride, leaky=0.1):
     return nn.Sequential(
@@ -65,6 +65,7 @@ class SSH(nn.Module):
         out = F.relu(out)
         return out
 
+
 class FPN(nn.Module):
     def __init__(self,in_channels_list,out_channels):
         super(FPN,self).__init__()
@@ -79,24 +80,24 @@ class FPN(nn.Module):
         self.merge2 = conv_bn(out_channels, out_channels, leaky = leaky)
 
     def forward(self, input):
-        # names = list(input.keys())
-        input = list(input.values())
+        # input = list(input.values())
 
         output1 = self.output1(input[0])
         output2 = self.output2(input[1])
         output3 = self.output3(input[2])
 
-        up3 = F.interpolate(output3, size=[output2.size(2), output2.size(3)], mode="nearest")
+        # up3 = F.interpolate(output3, scale_factor=[output3.size(2) / output2.size(2), output3.size(3) / output2.size(3)], size=[output2.size(2), output2.size(3)], mode="nearest")
+        up3 = F.interpolate(output3, scale_factor=[output2.size(2) / output3.size(2), output2.size(3) / output3.size(3)], mode="nearest")
         output2 = output2 + up3
         output2 = self.merge2(output2)
 
-        up2 = F.interpolate(output2, size=[output1.size(2), output1.size(3)], mode="nearest")
+        # up2 = F.interpolate(output2, size=[output1.size(2), output1.size(3)], mode="nearest")
+        up2 = F.interpolate(output2, scale_factor=[output1.size(2) / output2.size(2), output1.size(3) / output2.size(3)], mode="nearest")
         output1 = output1 + up2
         output1 = self.merge1(output1)
 
         out = [output1, output2, output3]
         return out
-
 
 
 class MobileNetV1(nn.Module):
@@ -122,16 +123,15 @@ class MobileNetV1(nn.Module):
             conv_dw(128, 256, 2), # 219 +3 2 = 241
             conv_dw(256, 256, 1), # 241 + 64 = 301
         )
-        self.avg = nn.AdaptiveAvgPool2d((1,1))
+        self.avg = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(256, 1000)
 
     def forward(self, x):
-        x = self.stage1(x)
-        x = self.stage2(x)
-        x = self.stage3(x)
-        x = self.avg(x)
-        # x = self.model(x)
-        x = x.view(-1, 256)
-        x = self.fc(x)
-        return x
+        x_1 = self.stage1(x)
+        x_2 = self.stage2(x_1)
+        x_3 = self.stage3(x_2)
+        # x = self.avg(x_3)
+        # x = x.view(-1, 256)
+        # x = self.fc(x)
+        return x_1, x_2, x_3
 
