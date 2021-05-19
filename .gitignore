@@ -1,0 +1,5 @@
+./sl/*
+
+*.pth
+*__pycache__
+*.tar
