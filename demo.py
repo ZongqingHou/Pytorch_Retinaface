@@ -14,10 +14,14 @@ import time
 
 parser = argparse.ArgumentParser(description='Retinaface')
 
-parser.add_argument('-m', '--trained_model', default='./weights/mobilenet0.25_Final.pth',
-                    type=str, help='Trained state_dict file path to open')
+# parser.add_argument('-m', '--trained_model', default='./weights/mobilenet0.25_Final.pth',
+#                     type=str, help='Trained state_dict file path to open')
+# parser.add_argument('--network', default='mobile0.25', help='Backbone network mobile0.25 or resnet50')
+# parser.add_argument('--cpu', action="store_true", default=False, help='Use cpu inference')
+
+parser.add_argument('-m', '--trained_model', default='/home/intern/zhuchunbo/retinaface/weights/lm_plus_1/mobilenet0.25_epoch_420.pth',type=str, help='Trained state_dict file path to open')
 parser.add_argument('--network', default='mobile0.25', help='Backbone network mobile0.25 or resnet50')
-parser.add_argument('--cpu', action="store_true", default=False, help='Use cpu inference')
+parser.add_argument('--cpu', action="store_true", default=True, help='Use cpu inference')
 parser.add_argument('--confidence_threshold', default=0.02, type=float, help='confidence_threshold')
 parser.add_argument('--top_k', default=5000, type=int, help='top_k')
 parser.add_argument('--nms_threshold', default=0.4, type=float, help='nms_threshold')
@@ -59,7 +63,8 @@ def load_model(model, pretrained_path, load_to_cpu):
     else:
         pretrained_dict = remove_prefix(pretrained_dict, 'module.')
     check_keys(model, pretrained_dict)
-    model.load_state_dict(pretrained_dict, strict=False)
+    # model.load_state_dict(pretrained_dict, strict=False)
+    model.load_state_dict(pretrained_dict, strict=True)
     return model
 
 
@@ -74,56 +79,75 @@ if __name__ == '__main__':
     net = RetinaFace(cfg=cfg, phase = 'test')
     net = load_model(net, args.trained_model, args.cpu)
     net.eval()
-    # print('Finished loading model!')
-    # print(net)
-    # cudnn.benchmark = True
+    # # print('Finished loading model!')
+    # # print(net)
+    # # cudnn.benchmark = True
+    # device = torch.device("cpu" if args.cpu else "cuda")
+    # # net = net.to(device)
+    #
+    # resize = 1
+    # # from mbn_rf import Mbn_RF
+    # #
+    # # net = Mbn_RF()
+    # # model_dict = {}
+    # # net_dict = torch.load("./weights/mobilenet0.25_Final.pth")
+    # #
+    # # for k, v in net_dict.items():
+    # #     if "body." in k:
+    # #         model_dict[k.split("body.")[-1]] = v
+    # #     elif "fpn." in k:
+    # #         model_dict[k.split("fpn.")[-1]] = v
+    # #     elif "BboxHead.0." in k:
+    # #         model_dict[k.replace("BboxHead.0", "bboxhead_1")] = v
+    # #     elif "BboxHead.1." in k:
+    # #         model_dict[k.replace("BboxHead.1", "bboxhead_2")] = v
+    # #     elif "BboxHead.2." in k:
+    # #         model_dict[k.replace("BboxHead.2", "bboxhead_3")] = v
+    # #     elif "LandmarkHead.0." in k:
+    # #         model_dict[k.replace("LandmarkHead.0", "ldmhead_1")] = v
+    # #     elif "LandmarkHead.1." in k:
+    # #         model_dict[k.replace("LandmarkHead.1", "ldmhead_2")] = v
+    # #     elif "LandmarkHead.2." in k:
+    # #         model_dict[k.replace("LandmarkHead.2", "ldmhead_3")] = v
+    # #     elif "ClassHead.0." in k:
+    # #         model_dict[k.replace("ClassHead.0", "classhead_1")] = v
+    # #     elif "ClassHead.1." in k:
+    # #         model_dict[k.replace("ClassHead.1", "classhead_2")] = v
+    # #     elif "ClassHead.2." in k:
+    # #         model_dict[k.replace("ClassHead.2", "classhead_3")] = v
+    # #     else:
+    # #         model_dict[k] = v
+    # #         print(k)
+    # #         print("-------------------")
+    # #
+    # # net.load_state_dict(model_dict)
+    # # net.eval()
+    # net = net.cuda()
+    #
+    # cap = cv2.VideoCapture(0)
+    # while True:
+    #     # _, img_raw = cap.read()
+    #     img_raw = cv2.imread("/home/hdd/Pictures/test/multiple_test.jpg", cv2.IMREAD_COLOR)
+    #     img_raw = cv2.resize(img_raw, (320, 320))
+
+    print('Finished loading model!')
+    print(net)
+    cudnn.benchmark = True
     device = torch.device("cpu" if args.cpu else "cuda")
-    # net = net.to(device)
+    net = net.to(device)
 
     resize = 1
-    # from mbn_rf import Mbn_RF
-    #
-    # net = Mbn_RF()
-    # model_dict = {}
-    # net_dict = torch.load("./weights/mobilenet0.25_Final.pth")
-    #
-    # for k, v in net_dict.items():
-    #     if "body." in k:
-    #         model_dict[k.split("body.")[-1]] = v
-    #     elif "fpn." in k:
-    #         model_dict[k.split("fpn.")[-1]] = v
-    #     elif "BboxHead.0." in k:
-    #         model_dict[k.replace("BboxHead.0", "bboxhead_1")] = v
-    #     elif "BboxHead.1." in k:
-    #         model_dict[k.replace("BboxHead.1", "bboxhead_2")] = v
-    #     elif "BboxHead.2." in k:
-    #         model_dict[k.replace("BboxHead.2", "bboxhead_3")] = v
-    #     elif "LandmarkHead.0." in k:
-    #         model_dict[k.replace("LandmarkHead.0", "ldmhead_1")] = v
-    #     elif "LandmarkHead.1." in k:
-    #         model_dict[k.replace("LandmarkHead.1", "ldmhead_2")] = v
-    #     elif "LandmarkHead.2." in k:
-    #         model_dict[k.replace("LandmarkHead.2", "ldmhead_3")] = v
-    #     elif "ClassHead.0." in k:
-    #         model_dict[k.replace("ClassHead.0", "classhead_1")] = v
-    #     elif "ClassHead.1." in k:
-    #         model_dict[k.replace("ClassHead.1", "classhead_2")] = v
-    #     elif "ClassHead.2." in k:
-    #         model_dict[k.replace("ClassHead.2", "classhead_3")] = v
-    #     else:
-    #         model_dict[k] = v
-    #         print(k)
-    #         print("-------------------")
-    #
-    # net.load_state_dict(model_dict)
-    # net.eval()
-    net = net.cuda()
 
     cap = cv2.VideoCapture(0)
+
+    # testing begin
+    # for i in range(100):
+    #     image_path = "./curve/test.jpg"
+    #     img_raw = cv2.imread(image_path, cv2.IMREAD_COLOR)
     while True:
         # _, img_raw = cap.read()
-        img_raw = cv2.imread("/home/hdd/Pictures/test/multiple_test.jpg", cv2.IMREAD_COLOR)
-        img_raw = cv2.resize(img_raw, (320, 320))
+        img_raw0 = cv2.imread("detector_testz.png", cv2.IMREAD_COLOR)
+        img_raw = cv2.resize(img_raw0, (640, 640))
         img = np.float32(img_raw)
 
         im_height, im_width, _ = img.shape
@@ -141,6 +165,16 @@ if __name__ == '__main__':
         priorbox = PriorBox(cfg, image_size=(im_height, im_width))
         priors = priorbox.forward()
         priors = priors.to(device)
+        # print(loc.size())
+        # print(conf.size())
+        # print(landms.size())
+        #
+        # print(conf)
+
+        priorbox = PriorBox(cfg, image_size=(im_height, im_width))
+        priors = priorbox.forward()
+        priors = priors.to(device)
+        # print(priors.shape)
         prior_data = priors.data
         boxes = decode(loc.data.squeeze(0), prior_data, cfg['variance'])
         boxes = boxes * scale / resize
@@ -151,6 +185,11 @@ if __name__ == '__main__':
                                img.shape[3], img.shape[2], img.shape[3], img.shape[2],
                                img.shape[3], img.shape[2]])
         scale1 = scale1.to(device)
+        # print(landms.shape)
+        scale1 = torch.Tensor([img.shape[3], img.shape[2],])
+        scale1=scale1.repeat(16800,68)
+        scale1 = scale1.to(device)
+        # print(scale1.shape)   # cfg.mask_dim = 16 ** 2
         landms = landms * scale1 / resize
         landms = landms.cpu().numpy()
 
@@ -181,6 +220,7 @@ if __name__ == '__main__':
 
         # show image
         for b in dets:
+            # print(b)
             if b[4] < args.vis_thres:
                 continue
             text = "{:.4f}".format(b[4])
@@ -204,4 +244,61 @@ if __name__ == '__main__':
 
         cv2.imshow("tt", img_raw)
         cv2.waitKey(0)
-
+        #
+        #     #     # im_height0, im_width0, _ = img_raw0.shape
+        #     # x = int(b[0] * im_width0 / 640)
+        #     # y = int(b[1] * im_height0 / 640)
+        #     # w = int(b[2] * im_width0 / 640)
+        #     # h = int(b[3] * im_height0 / 640)
+        #     # cv2.rectangle(img_raw0, (x,y), (w, h), (0, 0, 255), 2)
+        #     #
+        #     # cx = x
+        #     # cy = y + 12
+        #     # cv2.putText(img_raw0, text, (cx, cy),cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255))
+        #     #
+        #     # sp=img_raw0.shape
+        #     # # print(sp)
+        #     #
+        #     # # landms
+        #     # for i in range(5,44,2):
+        #     #
+        #     #     if b[i]>sp[0]:
+        #     #         b[i]=sp[0]
+        #     #     elif b[i]<0:
+        #     #         b[i]=10
+        #     #     if b[i+1]>sp[1]:
+        #     #         b[i+1]=sp[1]
+        #     #     elif b[i+1]<0:
+        #     #         b[i+1]=10
+        #     #
+        #     #     cv2.circle(img_raw0, (int(b[i]* im_width0 / 640), int(b[i+1]* im_height0 / 640)), 1, (0, 0, 255), 4)
+        #     #     cv2.putText(img_raw0, '%d'%((i-3)/2), (int(b[i]* im_width0 / 640), int(b[i+1]* im_height0 / 640)), 1, 1, (0, 0, 255), 1)
+        #
+        #     cx = b[0]
+        #     cy = b[1] + 12
+        #     cv2.putText(img_raw, text, (cx, cy),cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255))
+        #
+        #     sp=img_raw0.shape
+        #     # print(sp)
+        #
+        #     # landms
+        #     for i in range(5,140,2):
+        #
+        #         if b[i]>sp[0]:
+        #             b[i]=sp[0]
+        #         elif b[i]<0:
+        #             b[i]=10
+        #         if b[i+1]>sp[1]:
+        #             b[i+1]=sp[1]
+        #         elif b[i+1]<0:
+        #             b[i+1]=10
+        #
+        #         cv2.circle(img_raw, (b[i], b[i+1]), 1, (0, 255, 0), 4)
+        #         cv2.putText(img_raw, '%d'%((i-3)/2-1), (b[i], b[i+1]), 1, 1, (0, 255, 0), 1)
+        #
+        #     # save image
+        #     name = "testz.png"
+        #     cv2.imwrite(name, img_raw)
+        #
+        # cv2.imshow("tt", img_raw)
+        # cv2.waitKey(0)

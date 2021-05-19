@@ -41,7 +41,11 @@ def _crop(image, boxes, labels, landm, img_dim):
         boxes_t = boxes[mask_a].copy()
         labels_t = labels[mask_a].copy()
         landms_t = landm[mask_a].copy()
+<<<<<<< HEAD
         landms_t = landms_t.reshape([-1, 5, 2])
+=======
+        landms_t = landms_t.reshape([-1, 68, 2])
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
 
         if boxes_t.shape[0] == 0:
             continue
@@ -57,7 +61,11 @@ def _crop(image, boxes, labels, landm, img_dim):
         landms_t[:, :, :2] = landms_t[:, :, :2] - roi[:2]
         landms_t[:, :, :2] = np.maximum(landms_t[:, :, :2], np.array([0, 0]))
         landms_t[:, :, :2] = np.minimum(landms_t[:, :, :2], roi[2:] - roi[:2])
+<<<<<<< HEAD
         landms_t = landms_t.reshape([-1, 10])
+=======
+        landms_t = landms_t.reshape([-1, 136])
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
 
 
 	# make sure that the cropped image contains at least one face > 16 pixel at training image scale
@@ -173,7 +181,11 @@ def _mirror(image, boxes, landms):
 
         # landm
         landms = landms.copy()
+<<<<<<< HEAD
         landms = landms.reshape([-1, 5, 2])
+=======
+        landms = landms.reshape([-1, 68, 2])
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
         landms[:, :, 0] = width - landms[:, :, 0]
         tmp = landms[:, 1, :].copy()
         landms[:, 1, :] = landms[:, 0, :]
@@ -181,7 +193,11 @@ def _mirror(image, boxes, landms):
         tmp1 = landms[:, 4, :].copy()
         landms[:, 4, :] = landms[:, 3, :]
         landms[:, 3, :] = tmp1
+<<<<<<< HEAD
         landms = landms.reshape([-1, 10])
+=======
+        landms = landms.reshape([-1, 136])
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
 
     return image, boxes, landms
 
@@ -234,4 +250,8 @@ class preproc(object):
         labels_t = np.expand_dims(labels_t, 1)
         targets_t = np.hstack((boxes_t, landm_t, labels_t))
 
+<<<<<<< HEAD
         return image_t, targets_t
+=======
+        return image_t, targets_t
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901

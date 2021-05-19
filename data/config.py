@@ -3,19 +3,31 @@
 cfg_mnet = {
     'name': 'mobilenet0.25',
     'min_sizes': [[16, 32], [64, 128], [256, 512]],
+<<<<<<< HEAD
     # 'min_sizes': [[16, 32]],
     'steps': [8, 16, 32],
     # 'steps': [8],
+=======
+    'steps': [8, 16, 32],
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
     'variance': [0.1, 0.2],
     'clip': False,
     'loc_weight': 2.0,
     'gpu_train': True,
     'batch_size': 32,
+<<<<<<< HEAD
     'ngpu': 1,
     'epoch': 250,
     'decay1': 190,
     'decay2': 220,
     'image_size': 320, # 640
+=======
+    'ngpu': 8,
+    'epoch': 500,
+    'decay1': 350,
+    'decay2': 450,
+    'image_size': 640,
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
     'pretrain': True,
     'return_layers': {'stage1': 1, 'stage2': 2, 'stage3': 3},
     'in_channel': 32,
@@ -30,6 +42,7 @@ cfg_re50 = {
     'clip': False,
     'loc_weight': 2.0,
     'gpu_train': True,
+<<<<<<< HEAD
     'batch_size': 24,
     'ngpu': 4,
     'epoch': 100,
@@ -37,8 +50,21 @@ cfg_re50 = {
     'decay2': 90,
     'image_size': 840,
     'pretrain': True,
+=======
+    'batch_size': 8,
+    'ngpu': 8,
+    'epoch': 500,
+    'decay1': 350,
+    'decay2': 450,
+    'image_size': 840,
+    'pretrain': False,
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
     'return_layers': {'layer2': 1, 'layer3': 2, 'layer4': 3},
     'in_channel': 256,
     'out_channel': 256
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901

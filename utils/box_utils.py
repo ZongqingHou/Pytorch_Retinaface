@@ -148,6 +148,10 @@ def match(threshold, truths, priors, variances, labels, landms, loc_t, conf_t, l
 
     matches_landm = landms[best_truth_idx]
     landm = encode_landm(matches_landm, priors, variances)
+<<<<<<< HEAD
+=======
+
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
     loc_t[idx] = loc    # [num_priors,4] encoded offsets to learn
     conf_t[idx] = conf  # [num_priors] top class label for each prior
     landm_t[idx] = landm
@@ -190,11 +194,19 @@ def encode_landm(matched, priors, variances):
     """
 
     # dist b/t match center and prior's center
+<<<<<<< HEAD
     matched = torch.reshape(matched, (matched.size(0), 5, 2))
     priors_cx = priors[:, 0].unsqueeze(1).expand(matched.size(0), 5).unsqueeze(2)
     priors_cy = priors[:, 1].unsqueeze(1).expand(matched.size(0), 5).unsqueeze(2)
     priors_w = priors[:, 2].unsqueeze(1).expand(matched.size(0), 5).unsqueeze(2)
     priors_h = priors[:, 3].unsqueeze(1).expand(matched.size(0), 5).unsqueeze(2)
+=======
+    matched = torch.reshape(matched, (matched.size(0), 68, 2))
+    priors_cx = priors[:, 0].unsqueeze(1).expand(matched.size(0), 68).unsqueeze(2)
+    priors_cy = priors[:, 1].unsqueeze(1).expand(matched.size(0), 68).unsqueeze(2)
+    priors_w = priors[:, 2].unsqueeze(1).expand(matched.size(0), 68).unsqueeze(2)
+    priors_h = priors[:, 3].unsqueeze(1).expand(matched.size(0), 68).unsqueeze(2)
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
     priors = torch.cat([priors_cx, priors_cy, priors_w, priors_h], dim=2)
     g_cxcy = matched[:, :, :2] - priors[:, :, :2]
     # encode variance
@@ -238,12 +250,20 @@ def decode_landm(pre, priors, variances):
     Return:
         decoded landm predictions
     """
+<<<<<<< HEAD
     landms = torch.cat((priors[:, :2] + pre[:, :2] * variances[0] * priors[:, 2:],
                         priors[:, :2] + pre[:, 2:4] * variances[0] * priors[:, 2:],
                         priors[:, :2] + pre[:, 4:6] * variances[0] * priors[:, 2:],
                         priors[:, :2] + pre[:, 6:8] * variances[0] * priors[:, 2:],
                         priors[:, :2] + pre[:, 8:10] * variances[0] * priors[:, 2:],
                         ), dim=1)
+=======
+
+    landms=priors[:, :2] + pre[:, :2] * variances[0] * priors[:, 2:]
+    for i in range(1, 68):
+        landms = torch.cat((landms, priors[:, :2] + pre[:, 2 * i:2 * (i + 1)] * variances[0] * priors[:, 2:]), dim=1)
+
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
     return landms
 
 

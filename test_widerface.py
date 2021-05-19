@@ -17,6 +17,9 @@ parser = argparse.ArgumentParser(description='Retinaface')
 parser.add_argument('-m', '--trained_model', default='./weights/Resnet50_Final.pth',
                     type=str, help='Trained state_dict file path to open')
 parser.add_argument('--network', default='resnet50', help='Backbone network mobile0.25 or resnet50')
+parser.add_argument('-m', '--trained_model', default='./weights/mobilenet0.25_Final.pth',
+                    type=str, help='Trained state_dict file path to open')
+parser.add_argument('--network', default='mobile0.25', help='Backbone network mobile0.25 or resnet50')
 parser.add_argument('--origin_size', default=True, type=str, help='Whether use origin image size to evaluate')
 parser.add_argument('--save_folder', default='./widerface_evaluate/widerface_txt/', type=str, help='Dir to save txt results')
 parser.add_argument('--cpu', action="store_true", default=False, help='Use cpu inference')
@@ -97,6 +100,7 @@ if __name__ == '__main__':
     # testing begin
     for i, img_name in enumerate(test_dataset):
         image_path = testset_folder + img_name
+        print(image_path)
         img_raw = cv2.imread(image_path, cv2.IMREAD_COLOR)
         img = np.float32(img_raw)
 
@@ -131,6 +135,7 @@ if __name__ == '__main__':
         priors = priorbox.forward()
         priors = priors.to(device)
         prior_data = priors.data
+        print(prior_data.shape)
         boxes = decode(loc.data.squeeze(0), prior_data, cfg['variance'])
         boxes = boxes * scale / resize
         boxes = boxes.cpu().numpy()
@@ -139,6 +144,8 @@ if __name__ == '__main__':
         scale1 = torch.Tensor([img.shape[3], img.shape[2], img.shape[3], img.shape[2],
                                img.shape[3], img.shape[2], img.shape[3], img.shape[2],
                                img.shape[3], img.shape[2]])
+        scale1 = torch.Tensor([img.shape[3], img.shape[2], ])
+        scale1 = scale1.repeat(16800, 68)
         scale1 = scale1.to(device)
         landms = landms * scale1 / resize
         landms = landms.cpu().numpy()
@@ -211,6 +218,26 @@ if __name__ == '__main__':
                 cv2.circle(img_raw, (b[9], b[10]), 1, (255, 0, 255), 4)
                 cv2.circle(img_raw, (b[11], b[12]), 1, (0, 255, 0), 4)
                 cv2.circle(img_raw, (b[13], b[14]), 1, (255, 0, 0), 4)
+                sp = img_raw.shape
+                for i in range(5, 140, 2):
+
+                    if b[i] > sp[0]:
+                        b[i] = sp[0]
+                    elif b[i] < 0:
+                        b[i] = 10
+                    if b[i + 1] > sp[1]:
+                        b[i + 1] = sp[1]
+                    elif b[i + 1] < 0:
+                        b[i + 1] = 10
+
+                    cv2.circle(img_raw, (b[i], b[i + 1]), 1, (0, 0, 255), 4)
+                    cv2.putText(img_raw, '%d' % ((i - 3) / 2), (b[i], b[i + 1]), 1, 1, (0, 0, 255), 1)
+
+                # cv2.circle(img_raw, (b[5], b[6]), 1, (0, 0, 255), 4)
+                # cv2.circle(img_raw, (b[7], b[8]), 1, (0, 255, 255), 4)
+                # cv2.circle(img_raw, (b[9], b[10]), 1, (255, 0, 255), 4)
+                # cv2.circle(img_raw, (b[11], b[12]), 1, (0, 255, 0), 4)
+                # cv2.circle(img_raw, (b[13], b[14]), 1, (255, 0, 0), 4)
             # save image
             if not os.path.exists("./results/"):
                 os.makedirs("./results/")

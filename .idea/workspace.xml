@@ -2,16 +2,66 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a5089621-16e0-4d28-be23-400959ea7b7d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/mbn_68pts.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mbn_68pts_mv1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mbn_rf_modified.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/Pytorch_Retinaface.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Figure_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Figure_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/draw_loss.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/find_one_target.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/ghost_net.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pth5to68.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testx.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testz.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testzb.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testzf.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testzl.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/lm_plus_1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m17_1_500.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m17_2_400.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m20_1_300.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m20_2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m20_2_500.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m20_4_1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m20_4_2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m20_5.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m20_L.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m20_f1_100.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m30_1_500.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m30_2_500.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m5_w.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m68_5.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m68_5r1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m68_5r2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_m68_5r3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_r68_1_500.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_details/train_details_r68_2_500.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/try.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/widerface_evaluate/widerface_txt/24--Soldier_Firing/24_Soldier_Firing_Soldier_Firing_24_329.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/convert_to_onnx.py" beforeDir="false" afterPath="$PROJECT_DIR$/convert_to_onnx.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/data_augment.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/data_augment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/wider_face.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/wider_face.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/detect.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/layers/functions/prior_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/layers/functions/prior_box.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layers/modules/multibox_loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/layers/modules/multibox_loss.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/net.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/net.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/retinaface.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/retinaface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_fddb.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_fddb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_widerface.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_widerface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/box_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/box_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widerface_evaluate/ground_truth/wider_easy_val.mat" beforeDir="false" afterPath="$PROJECT_DIR$/widerface_evaluate/ground_truth/wider_easy_val.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widerface_evaluate/ground_truth/wider_face_val.mat" beforeDir="false" afterPath="$PROJECT_DIR$/widerface_evaluate/ground_truth/wider_face_val.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widerface_evaluate/ground_truth/wider_hard_val.mat" beforeDir="false" afterPath="$PROJECT_DIR$/widerface_evaluate/ground_truth/wider_hard_val.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widerface_evaluate/ground_truth/wider_medium_val.mat" beforeDir="false" afterPath="$PROJECT_DIR$/widerface_evaluate/ground_truth/wider_medium_val.mat" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -192,6 +242,7 @@
       <workItem from="1599121950142" duration="1256000" />
       <workItem from="1606880432057" duration="87000" />
       <workItem from="1621241744256" duration="2866000" />
+      <workItem from="1621394387741" duration="989000" />
     </task>
     <servers />
   </component>
@@ -221,7 +272,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/demo.py</url>
-          <line>140</line>
+          <line>164</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -231,17 +282,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/utils/box_utils.py</url>
-          <line>221</line>
+          <line>233</line>
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/layers/functions/prior_box.py</url>
-          <line>32</line>
+          <line>39</line>
           <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/models/retinaface.py</url>
-          <line>32</line>
+          <line>51</line>
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -256,7 +307,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/models/retinaface.py</url>
-          <line>50</line>
+          <line>85</line>
           <option name="timeStamp" value="51" />
         </line-breakpoint>
       </breakpoints>

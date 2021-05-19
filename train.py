@@ -1,6 +1,7 @@
 from __future__ import print_function
 import os
 import torch
+import torch.nn
 import torch.optim as optim
 import torch.backends.cudnn as cudnn
 import argparse
@@ -15,15 +16,18 @@ from models.retinaface import RetinaFace
 
 parser = argparse.ArgumentParser(description='Retinaface Training')
 parser.add_argument('--training_dataset', default='./data/widerface/train/label.txt', help='Training dataset directory')
+parser.add_argument('--training_dataset', default='/home/intern/zhuchunbo/retinaface/widerface/train/label.txt', help='Training dataset directory')
 parser.add_argument('--network', default='mobile0.25', help='Backbone network mobile0.25 or resnet50')
 parser.add_argument('--num_workers', default=4, type=int, help='Number of workers used in dataloading')
 parser.add_argument('--lr', '--learning-rate', default=1e-3, type=float, help='initial learning rate')
 parser.add_argument('--momentum', default=0.9, type=float, help='momentum')
+# parser.add_argument('--resume_net', default='./weights/mobile_nogroup20_L1/mobilenet0.25_Final.pth', help='resume net for retraining')
 parser.add_argument('--resume_net', default=None, help='resume net for retraining')
 parser.add_argument('--resume_epoch', default=0, type=int, help='resume iter for retraining')
 parser.add_argument('--weight_decay', default=5e-4, type=float, help='Weight decay for SGD')
 parser.add_argument('--gamma', default=0.1, type=float, help='Gamma update for SGD')
 parser.add_argument('--save_folder', default='./weights/', help='Location to save checkpoint models')
+parser.add_argument('--save_folder', default='/home/intern/zhuchunbo/retinaface/weights/lm_plus_1/', help='Location to save checkpoint models')
 
 args = parser.parse_args()
 
@@ -79,6 +83,9 @@ cudnn.benchmark = True
 
 
 optimizer = optim.SGD(net.parameters(), lr=initial_lr, momentum=momentum, weight_decay=weight_decay)
+optimizer = optim.SGD(net.parameters(), lr=initial_lr, momentum=momentum, weight_decay=weight_decay)
+# optimizer=optim.SGD(net.module.LandmarkHead.parameters(), lr=initial_lr, momentum=momentum, weight_decay=weight_decay)
+
 criterion = MultiBoxLoss(num_classes, 0.35, True, 0, True, 7, 0.35, False)
 
 priorbox = PriorBox(cfg, image_size=(img_dim, img_dim))
@@ -104,6 +111,7 @@ def train():
     else:
         start_iter = 0
 
+    f_train = open('./train_details/lm_plus_1.txt','w')
     for iteration in range(start_iter, max_iter):
         if iteration % epoch_size == 0:
             # create batch iterator
@@ -139,6 +147,10 @@ def train():
               epoch_size, iteration + 1, max_iter, loss_l.item(), loss_c.item(), loss_landm.item(), lr, batch_time, str(datetime.timedelta(seconds=eta))))
 
     torch.save(net.state_dict(), save_folder + cfg['name'] + '_Final.pth')
+        f_train.write(str(loss_l.item())+' '+str(loss_c.item())+' '+str(loss_landm.item())+'\n')
+
+    torch.save(net.state_dict(), save_folder + cfg['name'] + '_Final.pth')
+    f_train.close()
     # torch.save(net.state_dict(), save_folder + 'Final_Retinaface.pth')
 
 

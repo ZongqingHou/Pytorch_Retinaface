@@ -57,18 +57,33 @@ class MultiBoxLoss(nn.Module):
         loc_data, conf_data, landm_data = predictions
         priors = priors
         num = loc_data.size(0)
+<<<<<<< HEAD
+=======
+
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
         num_priors = (priors.size(0))
 
         # match priors (default boxes) and ground truth boxes
         loc_t = torch.Tensor(num, num_priors, 4)
+<<<<<<< HEAD
         landm_t = torch.Tensor(num, num_priors, 10)
+=======
+        landm_t = torch.Tensor(num, num_priors, 68*2)
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
         conf_t = torch.LongTensor(num, num_priors)
         for idx in range(num):
             truths = targets[idx][:, :4].data
             labels = targets[idx][:, -1].data
+<<<<<<< HEAD
             landms = targets[idx][:, 4:14].data
             defaults = priors.data
             match(self.threshold, truths, defaults, self.variance, labels, landms, loc_t, conf_t, landm_t, idx)
+=======
+            landms = targets[idx][:, 4:140].data
+            defaults = priors.data
+            match(self.threshold, truths, defaults, self.variance, labels, landms, loc_t, conf_t, landm_t, idx)
+
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
         if GPU:
             loc_t = loc_t.cuda()
             conf_t = conf_t.cuda()
@@ -81,8 +96,13 @@ class MultiBoxLoss(nn.Module):
         num_pos_landm = pos1.long().sum(1, keepdim=True)
         N1 = max(num_pos_landm.data.sum().float(), 1)
         pos_idx1 = pos1.unsqueeze(pos1.dim()).expand_as(landm_data)
+<<<<<<< HEAD
         landm_p = landm_data[pos_idx1].view(-1, 10)
         landm_t = landm_t[pos_idx1].view(-1, 10)
+=======
+        landm_p = landm_data[pos_idx1].view(-1, 136)
+        landm_t = landm_t[pos_idx1].view(-1, 136)
+>>>>>>> d6ac046416eb6c4f55ad26685f55ba7908d4a901
         loss_landm = F.smooth_l1_loss(landm_p, landm_t, reduction='sum')
 
 
