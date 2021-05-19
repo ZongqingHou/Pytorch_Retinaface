@@ -3,7 +3,9 @@
 cfg_mnet = {
     'name': 'mobilenet0.25',
     'min_sizes': [[16, 32], [64, 128], [256, 512]],
+    # 'min_sizes': [[16, 32]],
     'steps': [8, 16, 32],
+    # 'steps': [8],
     'variance': [0.1, 0.2],
     'clip': False,
     'loc_weight': 2.0,

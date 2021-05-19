@@ -14,9 +14,9 @@ import time
 
 parser = argparse.ArgumentParser(description='Retinaface')
 
-parser.add_argument('-m', '--trained_model', default='./weights/Resnet50_Final.pth',
+parser.add_argument('-m', '--trained_model', default='./weights/mobilenet0.25_Final.pth',
                     type=str, help='Trained state_dict file path to open')
-parser.add_argument('--network', default='resnet50', help='Backbone network mobile0.25 or resnet50')
+parser.add_argument('--network', default='mobile0.25', help='Backbone network mobile0.25 or resnet50')
 parser.add_argument('--cpu', action="store_true", default=False, help='Use cpu inference')
 parser.add_argument('--confidence_threshold', default=0.02, type=float, help='confidence_threshold')
 parser.add_argument('--top_k', default=5000, type=int, help='top_k')
@@ -74,24 +74,56 @@ if __name__ == '__main__':
     net = RetinaFace(cfg=cfg, phase = 'test')
     net = load_model(net, args.trained_model, args.cpu)
     net.eval()
-    print('Finished loading model!')
-    print(net)
-    cudnn.benchmark = True
+    # print('Finished loading model!')
+    # print(net)
+    # cudnn.benchmark = True
     device = torch.device("cpu" if args.cpu else "cuda")
-    net = net.to(device)
+    # net = net.to(device)
 
     resize = 1
+    # from mbn_rf import Mbn_RF
+    #
+    # net = Mbn_RF()
+    # model_dict = {}
+    # net_dict = torch.load("./weights/mobilenet0.25_Final.pth")
+    #
+    # for k, v in net_dict.items():
+    #     if "body." in k:
+    #         model_dict[k.split("body.")[-1]] = v
+    #     elif "fpn." in k:
+    #         model_dict[k.split("fpn.")[-1]] = v
+    #     elif "BboxHead.0." in k:
+    #         model_dict[k.replace("BboxHead.0", "bboxhead_1")] = v
+    #     elif "BboxHead.1." in k:
+    #         model_dict[k.replace("BboxHead.1", "bboxhead_2")] = v
+    #     elif "BboxHead.2." in k:
+    #         model_dict[k.replace("BboxHead.2", "bboxhead_3")] = v
+    #     elif "LandmarkHead.0." in k:
+    #         model_dict[k.replace("LandmarkHead.0", "ldmhead_1")] = v
+    #     elif "LandmarkHead.1." in k:
+    #         model_dict[k.replace("LandmarkHead.1", "ldmhead_2")] = v
+    #     elif "LandmarkHead.2." in k:
+    #         model_dict[k.replace("LandmarkHead.2", "ldmhead_3")] = v
+    #     elif "ClassHead.0." in k:
+    #         model_dict[k.replace("ClassHead.0", "classhead_1")] = v
+    #     elif "ClassHead.1." in k:
+    #         model_dict[k.replace("ClassHead.1", "classhead_2")] = v
+    #     elif "ClassHead.2." in k:
+    #         model_dict[k.replace("ClassHead.2", "classhead_3")] = v
+    #     else:
+    #         model_dict[k] = v
+    #         print(k)
+    #         print("-------------------")
+    #
+    # net.load_state_dict(model_dict)
+    # net.eval()
+    net = net.cuda()
 
     cap = cv2.VideoCapture(0)
-
-    # testing begin
-    # for i in range(100):
-    #     image_path = "./curve/test.jpg"
-    #     img_raw = cv2.imread(image_path, cv2.IMREAD_COLOR)
     while True:
         # _, img_raw = cap.read()
-        img_raw = cv2.imread("/home/hdd/datasets/detector_test.jpg", cv2.IMREAD_COLOR)
-        img_raw = cv2.resize(img_raw, (640, 640))
+        img_raw = cv2.imread("/home/hdd/Pictures/test/multiple_test.jpg", cv2.IMREAD_COLOR)
+        img_raw = cv2.resize(img_raw, (320, 320))
         img = np.float32(img_raw)
 
         im_height, im_width, _ = img.shape
@@ -105,12 +137,6 @@ if __name__ == '__main__':
         tic = time.time()
         loc, conf, landms = net(img)  # forward pass
         # print('net forward time: {:.4f}'.format(time.time() - tic))
-
-        print(loc.size())
-        print(conf.size())
-        print(landms.size())
-
-        print(conf)
 
         priorbox = PriorBox(cfg, image_size=(im_height, im_width))
         priors = priorbox.forward()
@@ -165,7 +191,7 @@ if __name__ == '__main__':
             cv2.putText(img_raw, text, (cx, cy),
                             cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255))
 
-                # landms
+            # landms
             cv2.circle(img_raw, (b[5], b[6]), 1, (0, 0, 255), 4)
             cv2.circle(img_raw, (b[7], b[8]), 1, (0, 255, 255), 4)
             cv2.circle(img_raw, (b[9], b[10]), 1, (255, 0, 255), 4)
